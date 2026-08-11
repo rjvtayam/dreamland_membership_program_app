@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from contextlib import asynccontextmanager
 from app.config import settings
 from app.api import auth, members, cards, transactions, dashboard, reports, settings as settings_api
@@ -40,6 +41,11 @@ app.include_router(transactions.router, prefix="/api/transactions", tags=["Trans
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"])
 app.include_router(reports.router, prefix="/api/reports", tags=["Reports"])
 app.include_router(settings_api.router, prefix="/api/settings", tags=["Settings"])
+
+
+@app.get("/", include_in_schema=False)
+async def root():
+    return RedirectResponse(url="/api/docs")
 
 
 @app.get("/api/health")
