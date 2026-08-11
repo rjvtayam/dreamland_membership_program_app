@@ -142,7 +142,7 @@ export default function LoginPage() {
 
           {/* Title - ALL CAPS with Orbitron */}
           <div className="text-center mb-7">
-            <h1 className="text-[26px] font-bold uppercase tracking-[0.08em]"
+            <h1 className="text-[22px] font-bold uppercase tracking-[0.06em] whitespace-nowrap"
               style={{
                 fontFamily: "'Orbitron', sans-serif",
                 background: 'linear-gradient(135deg, #6366f1, #a855f7, #22d3ee)',
