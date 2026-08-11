@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import AppLayout from '@/components/layout/AppLayout'
 import LoginPage from '@/pages/LoginPage'
+import TermsPage from '@/pages/TermsPage'
 import DashboardPage from '@/pages/DashboardPage'
 import MembersPage from '@/pages/MembersPage'
 import MemberDetailPage from '@/pages/MemberDetailPage'
@@ -23,6 +24,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/terms" element={<TermsPage />} />
       <Route
         path="/"
         element={

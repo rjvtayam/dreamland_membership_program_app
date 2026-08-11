@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useAuthStore } from '@/stores/authStore'
 import { authApi } from '@/api/auth'
 import { Button } from '@/components/ui/button'
-import { Gamepad2, Mail, Lock, ArrowRight, X } from 'lucide-react'
+import { Gamepad2, Mail, Lock, ArrowRight, X, Eye, EyeOff } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -73,6 +73,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [forgotOpen, setForgotOpen] = useState(false)
   const [agreed, setAgreed] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
   const login = useAuthStore((state) => state.login)
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
@@ -177,10 +178,14 @@ export default function LoginPage() {
                 style={{ fontFamily: "'Rajdhani', sans-serif" }}>Password</label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input type="password" placeholder="Enter your password"
+                <input type={showPassword ? 'text' : 'password'} placeholder="Enter your password"
                   {...register('password', { required: 'Password is required' })}
-                  className="w-full h-11 pl-10 pr-4 rounded-xl border border-gray-200 bg-gray-50/80 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+                  className="w-full h-11 pl-10 pr-10 rounded-xl border border-gray-200 bg-gray-50/80 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
                   style={{ fontFamily: "'Rajdhani', sans-serif" }} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
               {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>}
               {/* Forgot Password - below input, right side */}
@@ -201,7 +206,7 @@ export default function LoginPage() {
               <label htmlFor="terms" className="text-[12px] text-gray-500 leading-snug cursor-pointer"
                 style={{ fontFamily: "'Rajdhani', sans-serif" }}>
                 I agree to the{' '}
-                <a href="https://www.termsandconditionsgenerator.com/" target="_blank" rel="noopener noreferrer"
+                <a href="/terms" target="_blank" rel="noopener noreferrer"
                   className="font-semibold text-indigo-500 hover:text-indigo-600 underline underline-offset-2 transition-colors">
                   Terms and Conditions
                 </a>
