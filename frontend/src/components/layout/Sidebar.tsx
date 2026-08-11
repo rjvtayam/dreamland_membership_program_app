@@ -70,11 +70,24 @@ export default function Sidebar() {
               exit={{ opacity: 0, width: 0 }}
               transition={{ duration: 0.2 }}
               className="gradient-text text-base font-bold whitespace-nowrap overflow-hidden"
+              style={{ fontFamily: "'Orbitron', sans-serif" }}
             >
               Dreamland
             </motion.span>
           )}
         </AnimatePresence>
+        <div className="flex-1" />
+        <button
+          onClick={toggleSidebar}
+          className="flex-shrink-0 p-1 rounded-lg transition-colors text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]"
+        >
+          <ChevronLeft
+            className={cn(
+              "h-4 w-4 transition-transform duration-300",
+              !sidebarOpen && "rotate-180"
+            )}
+          />
+        </button>
       </div>
 
       {/* Divider */}
@@ -137,37 +150,6 @@ export default function Sidebar() {
           </div>
         ))}
       </nav>
-
-      {/* Collapse toggle */}
-      <div className="px-2 pb-3">
-        <button
-          onClick={toggleSidebar}
-          className={cn(
-            "w-full flex items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200",
-            "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
-          )}
-          style={{ background: 'var(--surface-hover)' }}
-        >
-          <ChevronLeft
-            className={cn(
-              "h-4 w-4 transition-transform duration-300",
-              !sidebarOpen && "rotate-180"
-            )}
-          />
-          <AnimatePresence>
-            {sidebarOpen && (
-              <motion.span
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: 'auto' }}
-                exit={{ opacity: 0, width: 0 }}
-                className="text-xs font-medium whitespace-nowrap overflow-hidden"
-              >
-                Collapse
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
-      </div>
     </motion.aside>
   )
 }

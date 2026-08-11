@@ -30,7 +30,7 @@ export default function TopBar() {
       <div className="flex items-center gap-3">
         <Zap className="h-3.5 w-3.5 animate-pulse-neon" style={{ color: 'var(--neon2)' }} />
         <h1 className="text-xs font-semibold uppercase tracking-[0.2em]"
-          style={{ color: 'var(--text-muted)' }}>
+          style={{ color: 'var(--text-muted)', fontFamily: "'Orbitron', sans-serif" }}>
           Dreamland Arcade
         </h1>
       </div>
