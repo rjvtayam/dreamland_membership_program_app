@@ -1,4 +1,5 @@
 import { cn } from '@/utils/formatters'
+import { motion } from 'framer-motion'
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg'
@@ -14,9 +15,11 @@ export default function LoadingSpinner({ size = 'md', className }: LoadingSpinne
 
   return (
     <div className={cn("flex items-center justify-center", className)}>
-      <div
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
         className={cn(
-          "animate-spin rounded-full border-2 border-gray-300 border-t-purple-600",
+          "rounded-full border-2 border-neon-purple/20 border-t-neon-purple",
           sizes[size]
         )}
       />
