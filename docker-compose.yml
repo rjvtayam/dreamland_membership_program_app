@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: dreamland-db
+    environment:
+      POSTGRES_DB: dreamland
+      POSTGRES_USER: dreamland
+      POSTGRES_PASSWORD: dreamland
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dreamland -d dreamland"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dreamland-net
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dreamland-backend
+    environment:
+      DATABASE_URL: postgresql+asyncpg://dreamland:dreamland@db:5432/dreamland
+      SECRET_KEY: dreamland-arcade-production-secret-key-2024
+      CORS_ORIGINS: '["http://localhost:5173","http://localhost:3000"]'
+      ENVIRONMENT: development
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    networks:
+      - dreamland-net
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dreamland-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - dreamland-net
+
+volumes:
+  postgres_data:
+
+networks:
+  dreamland-net:
+    driver: bridge
