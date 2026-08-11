@@ -209,52 +209,6 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Tooltip for collapsed sidebar */
-  .sidebar-tooltip {
-    position: absolute;
-    left: calc(100% + 12px);
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    transform: translateY(-50%) translateX(-4px);
-    z-index: 100;
-    background: var(--surface-solid);
-    color: var(--text-primary);
-    border: 1px solid var(--surface-border);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  }
-  .sidebar-tooltip::before {
-    content: '';
-    position: absolute;
-    left: -5px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    width: 10px;
-    height: 10px;
-    background: var(--surface-solid);
-    border-left: 1px solid var(--surface-border);
-    border-bottom: 1px solid var(--surface-border);
-  }
-
-  .dark .sidebar-tooltip::before {
-    background: var(--surface-solid);
-  }
-
-  .nav-item-wrapper {
-    position: relative;
-  }
-  .nav-item-wrapper:hover .sidebar-tooltip {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-
   /* Stat card hover glow */
   .stat-card {
     position: relative;
