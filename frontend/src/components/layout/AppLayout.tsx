@@ -26,12 +26,19 @@ export default function AppLayout() {
       <motion.div
         animate={{ marginLeft: sidebarOpen ? 256 : 88 }}
         transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-        className="relative z-10 flex flex-col min-h-screen"
+        className="relative z-10 flex flex-col min-h-screen pt-3 pr-3 pb-3"
       >
-        <TopBar />
-        <main className="flex-1 p-5">
-          <Outlet />
-        </main>
+        <div className="flex flex-col flex-1 rounded-2xl overflow-hidden" style={{
+          background: 'var(--surface)',
+          border: '1px solid var(--surface-border)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+        }}>
+          <TopBar />
+          <main className="flex-1 p-5 overflow-auto">
+            <Outlet />
+          </main>
+        </div>
       </motion.div>
     </div>
   )

@@ -11,10 +11,7 @@ export default function TopBar() {
     <header
       className="h-14 flex items-center justify-between px-5 relative"
       style={{
-        background: 'var(--surface)',
         borderBottom: '1px solid var(--surface-border)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
       }}
     >
       <div className="absolute bottom-0 left-0 right-0 h-px"
