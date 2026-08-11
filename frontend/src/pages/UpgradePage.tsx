@@ -15,69 +15,45 @@ import { motion } from 'framer-motion'
 export default function UpgradePage() {
   const [selectedCard, setSelectedCard] = useState<string | null>(null)
   const queryClient = useQueryClient()
-  const { data: upgrades, isLoading } = useQuery({
-    queryKey: ['cards', 'ready-for-upgrade'],
-    queryFn: cardsApi.getReadyForUpgrade,
-  })
-
+  const { data: upgrades, isLoading } = useQuery({ queryKey: ['cards', 'ready-for-upgrade'], queryFn: cardsApi.getReadyForUpgrade })
   const upgradeMutation = useMutation({
     mutationFn: cardsApi.upgrade,
-    onSuccess: (data) => {
-      toast.success(`Card upgraded to ${getTierName(data.tier)}! New card: ${data.card_id}`)
-      queryClient.invalidateQueries({ queryKey: ['cards'] })
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
-      setSelectedCard(null)
-    },
-    onError: (error: any) => toast.error(error.response?.data?.detail || 'Upgrade failed'),
+    onSuccess: (d) => { toast.success(`Upgraded to ${getTierName(d.tier)}! New: ${d.card_id}`); queryClient.invalidateQueries({ queryKey: ['cards'] }); queryClient.invalidateQueries({ queryKey: ['dashboard'] }); setSelectedCard(null) },
+    onError: (e: any) => toast.error(e.response?.data?.detail || 'Failed'),
   })
 
-  const handleUpgrade = () => { if (selectedCard) upgradeMutation.mutate(selectedCard) }
-
   return (
-    <div className="space-y-6">
-      <FadeUp>
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
-          Upgrade Queue
-        </h1>
-      </FadeUp>
-
+    <div className="space-y-5">
+      <FadeUp><h1 className="text-xl font-bold gradient-text">Upgrade Queue</h1></FadeUp>
       <FadeUp delay={0.1}>
-        <div className="glass-card p-6">
+        <div className="glass-card p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-gold to-neon-pink flex items-center justify-center">
-              <ArrowUpCircle className="h-5 w-5 text-white" />
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, var(--neon3), var(--neon))' }}>
+              <ArrowUpCircle className="h-4 w-4 text-white" />
             </div>
-            <h3 className="font-semibold text-white">Ready to Upgrade ({upgrades?.length || 0})</h3>
+            <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Ready to Upgrade ({upgrades?.length || 0})</h3>
           </div>
-          {isLoading ? (
-            <TableSkeleton rows={4} />
-          ) : !upgrades?.length ? (
-            <EmptyState title="No upgrades pending" description="All members are at their current tier" />
+          {isLoading ? <TableSkeleton rows={4} /> : !upgrades?.length ? (
+            <EmptyState title="No upgrades pending" description="All members at current tier" />
           ) : (
-            <StaggerContainer className="space-y-3">
-              {upgrades.map((upgrade: any) => (
-                <StaggerItem key={upgrade.card_id}>
-                  <motion.div
-                    whileHover={{ x: 4 }}
-                    className="flex items-center justify-between p-4 rounded-xl bg-neon-gold/5 border border-neon-gold/10 hover:border-neon-gold/30 transition-colors"
-                  >
-                    <div>
-                      <p className="font-medium text-white">{upgrade.member_name}</p>
-                      <p className="text-sm text-gray-500 font-mono">{upgrade.card_id}</p>
+            <StaggerContainer className="space-y-2.5">
+              {upgrades.map((u: any) => (
+                <StaggerItem key={u.card_id}>
+                  <motion.div whileHover={{ x: 3 }} className="flex items-center justify-between p-3.5 rounded-xl transition-colors"
+                    style={{ background: 'var(--surface-hover)', border: '1px solid var(--surface-border)' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                        style={{ background: 'linear-gradient(135deg, var(--neon), var(--neon2))' }}>{u.member_name?.charAt(0)}</div>
+                      <div><p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>{u.member_name}</p>
+                        <p className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{u.card_id}</p></div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-right">
-                        <Badge className="bg-white/10 text-gray-300 border border-white/10">
-                          {getTierName(upgrade.tier)}
-                        </Badge>
-                        <p className="text-sm text-gray-500 mt-1">{upgrade.total_points} pts</p>
-                      </div>
-                      <Button
-                        size="sm"
-                        onClick={() => setSelectedCard(upgrade.card_id)}
-                        className="bg-gradient-to-r from-neon-gold to-neon-pink hover:from-neon-gold/80 hover:to-neon-pink/80 text-white border-0"
-                      >
-                        <Zap className="h-4 w-4 mr-1" /> Upgrade
+                    <div className="flex items-center gap-3">
+                      <div className="text-right"><Badge variant="secondary">{getTierName(u.tier)}</Badge>
+                        <p className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>{u.total_points} pts</p></div>
+                      <Button size="sm" onClick={() => setSelectedCard(u.card_id)}
+                        className="text-white border-0" style={{ background: 'linear-gradient(135deg, var(--neon3), var(--neon))' }}>
+                        <Zap className="h-3.5 w-3.5 mr-1" /> Upgrade
                       </Button>
                     </div>
                   </motion.div>
@@ -87,15 +63,8 @@ export default function UpgradePage() {
           )}
         </div>
       </FadeUp>
-
-      <ConfirmDialog
-        open={!!selectedCard}
-        title="Confirm Card Upgrade"
-        message={`Are you sure you want to upgrade card ${selectedCard}? This will create a new card with points carried forward.`}
-        confirmLabel="Upgrade Card"
-        onConfirm={handleUpgrade}
-        onCancel={() => setSelectedCard(null)}
-      />
+      <ConfirmDialog open={!!selectedCard} title="Confirm Upgrade" message={`Upgrade card ${selectedCard}? Points carried forward to new card.`}
+        confirmLabel="Upgrade" onConfirm={() => selectedCard && upgradeMutation.mutate(selectedCard)} onCancel={() => setSelectedCard(null)} />
     </div>
   )
 }

@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useAuthStore } from '@/stores/authStore'
+import { useTheme } from '@/contexts/ThemeContext'
 import { authApi } from '@/api/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Gamepad2, Mail, Lock, Zap, ArrowRight } from 'lucide-react'
+import { Gamepad2, Mail, Lock, Zap, ArrowRight, Sun, Moon } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { motion } from 'framer-motion'
 
@@ -18,7 +19,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const login = useAuthStore((state) => state.login)
-
+  const { theme, toggleTheme } = useTheme()
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
 
   const onSubmit = async (data: LoginForm) => {
@@ -30,39 +31,43 @@ export default function LoginPage() {
       navigate('/')
     } catch (error: any) {
       toast.error(error.response?.data?.detail || 'Login failed')
-    } finally {
-      setLoading(false)
-    }
+    } finally { setLoading(false) }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#080b16] relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-purple/10 rounded-full blur-[150px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-cyan/8 rounded-full blur-[120px]" />
-        <div className="absolute inset-0 cyber-grid opacity-30" />
-        <div className="absolute inset-0 scanline-overlay opacity-20" />
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      style={{ background: 'var(--bg-page)' }}>
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[150px]"
+          style={{ background: 'rgba(var(--neon-rgb), 0.08)' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[120px]"
+          style={{ background: 'rgba(var(--neon2-rgb), 0.06)' }} />
+        <div className="dark:block hidden absolute inset-0 cyber-grid opacity-30" />
+        <div className="dark:block hidden absolute inset-0 scanline-overlay opacity-20" />
       </div>
 
+      {/* Theme Toggle - top right */}
+      <motion.button
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
+        onClick={toggleTheme}
+        className="absolute top-5 right-5 w-10 h-10 rounded-xl flex items-center justify-center z-20"
+        style={{ background: 'var(--surface)', border: '1px solid var(--surface-border)' }}
+      >
+        {theme === 'dark' ? <Sun className="h-4.5 w-4.5" style={{ color: 'var(--neon2)' }} />
+          : <Moon className="h-4.5 w-4.5" style={{ color: 'var(--neon)' }} />}
+      </motion.button>
+
       {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
+      {[...Array(5)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-neon-purple/40 rounded-full"
-          initial={{
-            x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
-            y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-          }}
-          animate={{
-            y: [null, -100],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 2,
-            repeat: Infinity,
-            delay: i * 0.5,
-          }}
+          className="absolute w-1 h-1 rounded-full"
+          style={{ background: 'rgba(var(--neon-rgb), 0.3)' }}
+          initial={{ x: Math.random() * 1200, y: Math.random() * 800 }}
+          animate={{ y: [null, -100], opacity: [0, 1, 0] }}
+          transition={{ duration: 3 + Math.random() * 2, repeat: Infinity, delay: i * 0.6 }}
         />
       ))}
 
@@ -73,27 +78,24 @@ export default function LoginPage() {
         className="relative z-10 w-full max-w-md mx-4"
       >
         <div className="glass-card p-8 relative overflow-hidden">
-          {/* Top glow line */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neon-purple to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-px"
+            style={{ background: 'linear-gradient(to right, transparent, var(--neon), transparent)' }} />
 
           {/* Corner accents */}
           <div className="absolute top-0 left-0 w-16 h-16">
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-neon-purple/60 to-transparent" />
-            <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-neon-purple/60 to-transparent" />
+            <div className="absolute top-0 left-0 w-full h-px" style={{ background: 'linear-gradient(to-r, var(--neon), transparent)' }} />
+            <div className="absolute top-0 left-0 h-full w-px" style={{ background: 'linear-gradient(to-b, var(--neon), transparent)' }} />
           </div>
           <div className="absolute top-0 right-0 w-16 h-16">
-            <div className="absolute top-0 right-0 w-full h-px bg-gradient-to-l from-neon-cyan/60 to-transparent" />
-            <div className="absolute top-0 right-0 h-full w-px bg-gradient-to-b from-neon-cyan/60 to-transparent" />
+            <div className="absolute top-0 right-0 w-full h-px" style={{ background: 'linear-gradient(to-l, var(--neon2), transparent)' }} />
+            <div className="absolute top-0 right-0 h-full w-px" style={{ background: 'linear-gradient(to-b, var(--neon2), transparent)' }} />
           </div>
 
           {/* Logo */}
           <div className="flex justify-center mb-6">
-            <motion.div
-              whileHover={{ rotate: 10, scale: 1.05 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-neon-purple/30 rounded-2xl blur-xl" />
-              <div className="relative bg-gradient-to-br from-neon-purple via-neon-pink to-neon-cyan p-5 rounded-2xl">
+            <motion.div whileHover={{ rotate: 10, scale: 1.05 }} className="relative">
+              <div className="absolute inset-0 rounded-2xl blur-xl" style={{ background: 'rgba(var(--neon-rgb), 0.25)' }} />
+              <div className="relative p-5 rounded-2xl" style={{ background: 'linear-gradient(135deg, var(--neon), var(--neon2))' }}>
                 <Gamepad2 className="h-10 w-10 text-white" />
               </div>
             </motion.div>
@@ -101,81 +103,46 @@ export default function LoginPage() {
 
           {/* Title */}
           <div className="text-center mb-8">
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-3xl font-bold bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-purple bg-clip-text text-transparent animate-gradient"
-            >
+            <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="text-3xl font-bold gradient-text animate-gradient">
               Dreamland Arcade
             </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-gray-500 mt-2 text-sm uppercase tracking-widest"
-            >
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+              className="mt-2 text-sm uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
               Membership Management System
             </motion.p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
-                Email
-              </label>
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
+              <label className="block text-xs font-medium mb-2 uppercase tracking-wider"
+                style={{ color: 'var(--text-muted)' }}>Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
-                <Input
-                  type="email"
-                  placeholder="admin@dreamland.com"
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: 'var(--text-muted)' }} />
+                <Input type="email" placeholder="admin@dreamland.com"
                   {...register('email', { required: 'Email is required' })}
-                  className="pl-10 bg-white/5 border-white/10 focus:border-neon-purple/50 focus:ring-neon-purple/20 text-white placeholder:text-gray-700"
-                />
+                  className="pl-10" />
               </div>
-              {errors.email && (
-                <p className="text-sm text-red-400 mt-1">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="text-sm mt-1" style={{ color: '#ef4444' }}>{errors.email.message}</p>}
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
-                Password
-              </label>
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>
+              <label className="block text-xs font-medium mb-2 uppercase tracking-wider"
+                style={{ color: 'var(--text-muted)' }}>Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
-                <Input
-                  type="password"
-                  placeholder="Enter your password"
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: 'var(--text-muted)' }} />
+                <Input type="password" placeholder="Enter your password"
                   {...register('password', { required: 'Password is required' })}
-                  className="pl-10 bg-white/5 border-white/10 focus:border-neon-purple/50 focus:ring-neon-purple/20 text-white placeholder:text-gray-700"
-                />
+                  className="pl-10" />
               </div>
-              {errors.password && (
-                <p className="text-sm text-red-400 mt-1">{errors.password.message}</p>
-              )}
+              {errors.password && <p className="text-sm mt-1" style={{ color: '#ef4444' }}>{errors.password.message}</p>}
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <Button
-                type="submit"
-                className="w-full relative group bg-gradient-to-r from-neon-purple to-neon-cyan hover:from-neon-purple/80 hover:to-neon-cyan/80 text-white font-semibold py-3 h-12 border-0"
-                disabled={loading}
-              >
-                <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+              <Button type="submit" className="w-full relative group h-12 font-semibold text-white border-0"
+                style={{ background: 'linear-gradient(135deg, var(--neon), var(--neon2))' }}
+                disabled={loading}>
                 <span className="relative flex items-center justify-center gap-2">
                   {loading ? (
                     <div className="flex items-center gap-2">
@@ -183,20 +150,15 @@ export default function LoginPage() {
                       Signing in...
                     </div>
                   ) : (
-                    <>
-                      <Zap className="h-4 w-4" />
-                      Sign In
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </>
+                    <><Zap className="h-4 w-4" /> Sign In <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></>
                   )}
                 </span>
               </Button>
             </motion.div>
           </form>
 
-          {/* Footer accent */}
           <div className="mt-6 text-center">
-            <p className="text-[10px] text-gray-700 uppercase tracking-[0.2em]">
+            <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'var(--text-muted)', opacity: 0.5 }}>
               Powered by Dreamland Technology
             </p>
           </div>

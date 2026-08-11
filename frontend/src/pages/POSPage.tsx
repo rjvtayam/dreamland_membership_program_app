@@ -24,31 +24,18 @@ export default function POSPage() {
   const handleLookup = async () => {
     if (!cardId.trim()) { toast.error('Please enter a card ID'); return }
     setLoading(true)
-    try {
-      const result = await cardsApi.lookup(cardId)
-      setCardInfo(result)
-      setSelectedPackage(null)
-    } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Card not found')
-      setCardInfo(null)
-    } finally { setLoading(false) }
+    try { const r = await cardsApi.lookup(cardId); setCardInfo(r); setSelectedPackage(null) }
+    catch (e: any) { toast.error(e.response?.data?.detail || 'Card not found'); setCardInfo(null) }
+    finally { setLoading(false) }
   }
 
-  const transactionMutation = useMutation({
+  const txMutation = useMutation({
     mutationFn: transactionsApi.create,
-    onSuccess: (data) => {
-      toast.success(`Transaction successful! Amount: ${formatCurrency(Number(data.amount_to_collect))}`)
-      setCardId(''); setSelectedPackage(null); setNotes(''); setCardInfo(null)
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
-    },
-    onError: (error: any) => toast.error(error.response?.data?.detail || 'Transaction failed'),
+    onSuccess: (d) => { toast.success(`Success! Collect ${formatCurrency(Number(d.amount_to_collect))}`); setCardId(''); setSelectedPackage(null); setNotes(''); setCardInfo(null); queryClient.invalidateQueries({ queryKey: ['dashboard'] }) },
+    onError: (e: any) => toast.error(e.response?.data?.detail || 'Failed'),
   })
 
-  const handleConfirm = () => {
-    if (!cardInfo || !selectedPackage) return
-    transactionMutation.mutate({ card_id: cardInfo.card_id, token_package_id: selectedPackage, notes: notes || undefined })
-  }
-
+  const handleConfirm = () => { if (cardInfo && selectedPackage) txMutation.mutate({ card_id: cardInfo.card_id, token_package_id: selectedPackage, notes: notes || undefined }) }
   const selectedPkg = TOKEN_PACKAGES.find((p) => p.id === selectedPackage)
   const discountEligible = selectedPkg ? selectedPkg.cash_value >= DISCOUNT_THRESHOLD : false
   const discountPercent = cardInfo?.discount_percent || 0
@@ -56,153 +43,92 @@ export default function POSPage() {
   const amountToCollect = selectedPkg ? selectedPkg.cash_value - discountAmount : 0
 
   return (
-    <div className="space-y-6">
-      <FadeUp>
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
-          Point of Sale
-        </h1>
-      </FadeUp>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Card Lookup */}
+    <div className="space-y-5">
+      <FadeUp><h1 className="text-xl font-bold gradient-text">Point of Sale</h1></FadeUp>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <FadeUp delay={0.1}>
-          <div className="glass-card p-6">
+          <div className="glass-card p-5">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-purple to-neon-cyan flex items-center justify-center">
-                <CreditCard className="h-5 w-5 text-white" />
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, var(--neon), var(--neon2))' }}>
+                <CreditCard className="h-4 w-4 text-white" />
               </div>
-              <h3 className="font-semibold text-white">Card Lookup</h3>
+              <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Card Lookup</h3>
             </div>
             <div className="space-y-4">
               <div className="flex gap-2">
-                <Input
-                  placeholder="Enter Card ID (e.g., DLA-Q-000001)"
-                  value={cardId}
-                  onChange={(e) => setCardId(e.target.value.toUpperCase())}
-                  onKeyDown={(e) => e.key === 'Enter' && handleLookup()}
-                  className="font-mono bg-white/5 border-white/10 focus:border-neon-purple/50 text-white placeholder:text-gray-700"
-                />
-                <Button onClick={handleLookup} disabled={loading}
-                  className="bg-gradient-to-r from-neon-purple to-neon-cyan hover:from-neon-purple/80 hover:to-neon-cyan/80 text-white border-0">
+                <Input placeholder="DLA-Q-000001" value={cardId} className="font-mono"
+                  onChange={(e) => setCardId(e.target.value.toUpperCase())} onKeyDown={(e) => e.key === 'Enter' && handleLookup()} />
+                <Button onClick={handleLookup} disabled={loading} className="text-white border-0"
+                  style={{ background: 'linear-gradient(135deg, var(--neon), var(--neon2))' }}>
                   <Search className="h-4 w-4" />
                 </Button>
               </div>
               {cardInfo && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 rounded-xl bg-white/[0.03] border border-neon-purple/10 space-y-3"
-                >
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                  className="p-4 rounded-xl space-y-2.5" style={{ background: 'var(--surface-hover)', border: '1px solid var(--surface-border)' }}>
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-white">{cardInfo.member_name}</span>
-                    <Badge className={`${getTierColor(cardInfo.tier)} border-0`}>{getTierName(cardInfo.tier)}</Badge>
+                    <span className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>{cardInfo.member_name}</span>
+                    <Badge className={getTierColor(cardInfo.tier)}>{getTierName(cardInfo.tier)}</Badge>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    {[
-                      { label: 'Card ID', value: cardInfo.card_id, mono: true },
-                      { label: 'Total Points', value: cardInfo.total_points },
-                      { label: 'Discount', value: `${cardInfo.discount_percent}%` },
-                      { label: 'Status', value: cardInfo.status, capitalize: true },
-                    ].map((item) => (
-                      <div key={item.label}>
-                        <p className="text-gray-600 text-xs">{item.label}</p>
-                        <p className={`text-white ${item.mono ? 'font-mono' : ''} ${item.capitalize ? 'capitalize' : ''}`}>{item.value}</p>
-                      </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {[{ l: 'Card ID', v: cardInfo.card_id, mono: true }, { l: 'Points', v: String(cardInfo.total_points) },
+                      { l: 'Discount', v: `${cardInfo.discount_percent}%` }, { l: 'Status', v: cardInfo.status, cap: true }].map((i) => (
+                      <div key={i.l}><p style={{ color: 'var(--text-muted)' }}>{i.l}</p>
+                        <p className={`${i.mono ? 'font-mono' : ''} ${i.cap ? 'capitalize' : ''}`} style={{ color: 'var(--text-primary)' }}>{i.v}</p></div>
                     ))}
                   </div>
-                  {cardInfo.ready_to_upgrade && (
-                    <div className="p-2 rounded-lg bg-neon-gold/10 text-neon-gold text-xs border border-neon-gold/20">
-                      This member is ready to upgrade!
-                    </div>
-                  )}
+                  {cardInfo.ready_to_upgrade && <div className="p-2 rounded-lg text-xs" style={{ background: 'rgba(var(--neon3-rgb),0.1)', color: 'var(--neon3)', border: '1px solid rgba(var(--neon3-rgb),0.15)' }}>Ready to upgrade!</div>}
                 </motion.div>
               )}
             </div>
           </div>
         </FadeUp>
-
-        {/* Package Selection & Summary */}
         <FadeUp delay={0.2}>
-          <div className="glass-card p-6">
+          <div className="glass-card p-5">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center">
-                <ShoppingCart className="h-5 w-5 text-white" />
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, var(--neon2), var(--neon3))' }}>
+                <ShoppingCart className="h-4 w-4 text-white" />
               </div>
-              <h3 className="font-semibold text-white">Select Package</h3>
+              <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Select Package</h3>
             </div>
             <div className="space-y-4">
-              <StaggerContainer className="grid grid-cols-2 gap-3">
+              <StaggerContainer className="grid grid-cols-2 gap-2.5">
                 {TOKEN_PACKAGES.map((pkg) => (
                   <StaggerItem key={pkg.id}>
-                    <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
+                    <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                       onClick={() => setSelectedPackage(pkg.id)}
-                      className={`p-4 rounded-xl border-2 text-left transition-all ${
-                        selectedPackage === pkg.id
-                          ? 'border-neon-purple bg-neon-purple/10 neon-glow'
-                          : 'border-white/10 hover:border-white/20 bg-white/[0.02]'
-                      }`}
-                    >
-                      <p className="font-medium text-white text-sm">{pkg.name}</p>
-                      <p className="text-xs text-gray-500 mt-1">{formatCurrency(pkg.cash_value)}</p>
-                      <p className="text-xs text-neon-cyan mt-0.5">{pkg.points_earned} pts</p>
+                      className="p-3.5 rounded-xl border-2 text-left transition-all w-full"
+                      style={{
+                        borderColor: selectedPackage === pkg.id ? 'var(--neon)' : 'var(--surface-border)',
+                        background: selectedPackage === pkg.id ? 'rgba(var(--neon-rgb),0.08)' : 'var(--surface-hover)',
+                      }}>
+                      <p className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>{pkg.name}</p>
+                      <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{formatCurrency(pkg.cash_value)}</p>
+                      <p className="text-xs" style={{ color: 'var(--neon2)' }}>{pkg.points_earned} pts</p>
                     </motion.button>
                   </StaggerItem>
                 ))}
               </StaggerContainer>
-
-              <div>
-                <label className="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Notes (Optional)</label>
-                <Input
-                  placeholder="Add any notes..."
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  className="bg-white/5 border-white/10 focus:border-neon-purple/50 text-white placeholder:text-gray-700"
-                />
-              </div>
-
+              <Input placeholder="Notes (optional)" value={notes} onChange={(e) => setNotes(e.target.value)} />
               {selectedPkg && cardInfo && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 rounded-xl bg-white/[0.03] border border-neon-purple/10 space-y-2"
-                >
-                  <h4 className="font-medium text-white text-sm">Transaction Summary</h4>
-                  <div className="space-y-1.5 text-sm">
-                    {[
-                      { label: 'Package', value: selectedPkg.name },
-                      { label: 'Cash Value', value: formatCurrency(selectedPkg.cash_value) },
-                      { label: 'Points to Earn', value: String(selectedPkg.points_earned) },
-                      { label: 'Discount Eligible', value: discountEligible ? 'Yes (≥₱150)' : 'No' },
-                    ].map((item) => (
-                      <div key={item.label} className="flex justify-between">
-                        <span className="text-gray-500">{item.label}</span>
-                        <span className="text-white">{item.value}</span>
-                      </div>
-                    ))}
-                    {discountEligible && (
-                      <div className="flex justify-between text-neon-green">
-                        <span>Discount ({discountPercent}%)</span>
-                        <span>-{formatCurrency(discountAmount)}</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between font-bold text-lg pt-2 border-t border-white/10">
-                      <span className="text-white">Amount to Collect</span>
-                      <span className="text-neon-cyan">{formatCurrency(amountToCollect)}</span>
-                    </div>
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                  className="p-4 rounded-xl space-y-1.5 text-sm" style={{ background: 'var(--surface-hover)', border: '1px solid var(--surface-border)' }}>
+                  {[{ l: 'Package', v: selectedPkg.name }, { l: 'Cash Value', v: formatCurrency(selectedPkg.cash_value) },
+                    { l: 'Points', v: String(selectedPkg.points_earned) }, { l: 'Discount Eligible', v: discountEligible ? 'Yes' : 'No' }].map((i) => (
+                    <div key={i.l} className="flex justify-between"><span style={{ color: 'var(--text-muted)' }}>{i.l}</span><span style={{ color: 'var(--text-primary)' }}>{i.v}</span></div>
+                  ))}
+                  {discountEligible && <div className="flex justify-between" style={{ color: 'var(--neon2)' }}><span>Discount ({discountPercent}%)</span><span>-{formatCurrency(discountAmount)}</span></div>}
+                  <div className="flex justify-between font-bold text-lg pt-2" style={{ borderTop: '1px solid var(--surface-border)' }}>
+                    <span style={{ color: 'var(--text-primary)' }}>Total</span><span className="gradient-text">{formatCurrency(amountToCollect)}</span>
                   </div>
                 </motion.div>
               )}
-
-              <Button
-                className="w-full bg-gradient-to-r from-neon-green to-neon-cyan hover:from-neon-green/80 hover:to-neon-cyan/80 text-white border-0 h-12 font-semibold"
-                onClick={handleConfirm}
-                disabled={!cardInfo || !selectedPackage || transactionMutation.isPending}
-              >
-                {transactionMutation.isPending ? 'Processing...' : (
-                  <><Check className="h-5 w-5 mr-2" /> Confirm Transaction</>
-                )}
+              <Button className="w-full h-11 font-semibold text-white border-0"
+                style={{ background: 'linear-gradient(135deg, var(--neon2), var(--neon))' }}
+                onClick={handleConfirm} disabled={!cardInfo || !selectedPackage || txMutation.isPending}>
+                {txMutation.isPending ? 'Processing...' : <><Check className="h-4 w-4 mr-2" /> Confirm Transaction</>}
               </Button>
             </div>
           </div>

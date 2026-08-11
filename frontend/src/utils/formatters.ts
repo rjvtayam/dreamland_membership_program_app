@@ -33,12 +33,12 @@ export function formatDateTime(date: string | Date): string {
 
 export function getTierColor(tier: string): string {
   const colors: Record<string, string> = {
-    qualifier: 'bg-gray-500/20 text-gray-300 border border-gray-500/30',
-    silver: 'bg-gray-300/20 text-gray-300 border border-gray-300/30',
-    gold: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
-    black: 'bg-white/10 text-white border border-white/20',
+    qualifier: 'bg-gray-400/15 text-gray-500 dark:text-gray-400 border border-gray-400/20',
+    silver: 'bg-slate-400/15 text-slate-600 dark:text-slate-300 border border-slate-400/20',
+    gold: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20',
+    black: 'bg-gray-800/15 text-gray-800 dark:text-gray-200 border border-gray-800/20',
   }
-  return colors[tier] || 'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+  return colors[tier] || 'bg-gray-400/15 text-gray-500 border border-gray-400/20'
 }
 
 export function getTierName(tier: string): string {
