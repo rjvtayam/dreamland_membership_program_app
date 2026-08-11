@@ -9,98 +9,98 @@
     --foreground: 210 40% 96%;
     --card: 230 25% 8%;
     --card-foreground: 210 40% 96%;
-    --primary: 270 91% 60%;
+    --primary: 250 55% 60%;
     --primary-foreground: 210 40% 98%;
     --secondary: 230 20% 12%;
     --secondary-foreground: 210 40% 80%;
     --muted: 230 20% 12%;
     --muted-foreground: 215 16% 55%;
-    --accent: 270 91% 60%;
+    --accent: 250 55% 60%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 210 40% 98%;
     --border: 230 20% 16%;
     --input: 230 20% 12%;
-    --ring: 270 91% 60%;
+    --ring: 250 55% 60%;
     --radius: 0.75rem;
-    --surface: rgba(15, 20, 35, 0.7);
-    --surface-solid: #0f1423;
-    --surface-border: rgba(168, 85, 247, 0.12);
-    --surface-hover: rgba(168, 85, 247, 0.06);
-    --neon: #a855f7;
-    --neon-rgb: 168, 85, 247;
-    --neon2: #22d3ee;
-    --neon2-rgb: 34, 211, 238;
-    --neon3: #ec4899;
-    --neon3-rgb: 236, 72, 153;
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --bg-page: #080b16;
-    --bg-card: rgba(15, 20, 35, 0.6);
-    --sidebar-bg: rgba(10, 14, 26, 0.85);
-    --sidebar-border: rgba(168, 85, 247, 0.1);
-    --chart-grid: rgba(168, 85, 247, 0.08);
-    --stat-gradient-1: from-purple-500/15 to-blue-500/15;
-    --stat-gradient-2: from-cyan-500/15 to-blue-500/15;
-    --stat-gradient-3: from-green-500/15 to-cyan-500/15;
-    --stat-gradient-4: from-amber-500/15 to-pink-500/15;
-    --stat-gradient-5: from-pink-500/15 to-purple-500/15;
-    --stat-icon-1: from-purple-500 to-blue-500;
-    --stat-icon-2: from-cyan-500 to-blue-500;
-    --stat-icon-3: from-green-500 to-cyan-500;
-    --stat-icon-4: from-amber-500 to-pink-500;
-    --stat-icon-5: from-pink-500 to-purple-500;
+    --surface: rgba(15, 18, 30, 0.7);
+    --surface-solid: #0f121e;
+    --surface-border: rgba(120, 130, 180, 0.08);
+    --surface-hover: rgba(120, 130, 180, 0.04);
+    --neon: #7c8ecf;
+    --neon-rgb: 124, 142, 207;
+    --neon2: #6b8cc9;
+    --neon2-rgb: 107, 140, 201;
+    --neon3: #9b8dd4;
+    --neon3-rgb: 155, 141, 212;
+    --text-primary: #e2e6f0;
+    --text-secondary: #8892a8;
+    --text-muted: #555e74;
+    --bg-page: #0a0d16;
+    --bg-card: rgba(15, 18, 30, 0.6);
+    --sidebar-bg: rgba(10, 12, 22, 0.88);
+    --sidebar-border: rgba(120, 130, 180, 0.06);
+    --chart-grid: rgba(120, 130, 180, 0.06);
+    --stat-gradient-1: from-indigo-500/12 to-blue-500/12;
+    --stat-gradient-2: from-cyan-500/12 to-indigo-500/12;
+    --stat-gradient-3: from-teal-500/12 to-emerald-500/12;
+    --stat-gradient-4: from-amber-500/12 to-rose-500/12;
+    --stat-gradient-5: from-violet-500/12 to-indigo-500/12;
+    --stat-icon-1: from-indigo-400 to-blue-500;
+    --stat-icon-2: from-cyan-400 to-indigo-400;
+    --stat-icon-3: from-teal-400 to-emerald-400;
+    --stat-icon-4: from-amber-400 to-rose-400;
+    --stat-icon-5: from-violet-400 to-indigo-400;
   }
 
   /* ========== LIGHT THEME ========== */
   .light {
-    --background: 220 14% 96%;
-    --foreground: 220 15% 10%;
+    --background: 225 15% 97%;
+    --foreground: 224 20% 13%;
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 10%;
-    --primary: 220 90% 50%;
+    --card-foreground: 224 20% 13%;
+    --primary: 235 35% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 92%;
-    --secondary-foreground: 220 15% 25%;
-    --muted: 220 14% 92%;
-    --muted-foreground: 220 10% 46%;
-    --accent: 220 90% 50%;
+    --secondary: 225 12% 93%;
+    --secondary-foreground: 224 15% 30%;
+    --muted: 225 12% 93%;
+    --muted-foreground: 220 10% 50%;
+    --accent: 235 35% 55%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 65% 52%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 14% 88%;
-    --input: 220 14% 90%;
-    --ring: 220 90% 50%;
+    --border: 225 10% 89%;
+    --input: 225 12% 91%;
+    --ring: 235 35% 55%;
     --radius: 0.75rem;
-    --surface: rgba(255, 255, 255, 0.8);
+    --surface: rgba(255, 255, 255, 0.75);
     --surface-solid: #ffffff;
-    --surface-border: rgba(30, 64, 175, 0.12);
-    --surface-hover: rgba(30, 64, 175, 0.05);
-    --neon: #2563eb;
-    --neon-rgb: 37, 99, 235;
-    --neon2: #0ea5e9;
-    --neon2-rgb: 14, 165, 233;
-    --neon3: #6366f1;
-    --neon3-rgb: 99, 102, 241;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    --bg-page: #f1f5f9;
-    --bg-card: rgba(255, 255, 255, 0.8);
-    --sidebar-bg: rgba(255, 255, 255, 0.9);
-    --sidebar-border: rgba(30, 64, 175, 0.1);
-    --chart-grid: rgba(30, 64, 175, 0.08);
-    --stat-gradient-1: from-blue-500/10 to-indigo-500/10;
-    --stat-gradient-2: from-sky-500/10 to-blue-500/10;
-    --stat-gradient-3: from-emerald-500/10 to-teal-500/10;
-    --stat-gradient-4: from-amber-500/10 to-orange-500/10;
-    --stat-gradient-5: from-violet-500/10 to-purple-500/10;
-    --stat-icon-1: from-blue-500 to-indigo-500;
-    --stat-icon-2: from-sky-500 to-blue-500;
-    --stat-icon-3: from-emerald-500 to-teal-500;
-    --stat-icon-4: from-amber-500 to-orange-500;
-    --stat-icon-5: from-violet-500 to-purple-500;
+    --surface-border: rgba(80, 100, 160, 0.08);
+    --surface-hover: rgba(80, 100, 160, 0.04);
+    --neon: #5b6abf;
+    --neon-rgb: 91, 106, 191;
+    --neon2: #7c8ecf;
+    --neon2-rgb: 124, 142, 207;
+    --neon3: #8b7ec8;
+    --neon3-rgb: 139, 126, 200;
+    --text-primary: #1e2640;
+    --text-secondary: #4a5578;
+    --text-muted: #8892a8;
+    --bg-page: #eef0f5;
+    --bg-card: rgba(255, 255, 255, 0.75);
+    --sidebar-bg: rgba(255, 255, 255, 0.88);
+    --sidebar-border: rgba(80, 100, 160, 0.08);
+    --chart-grid: rgba(80, 100, 160, 0.06);
+    --stat-gradient-1: from-indigo-400/8 to-blue-400/8;
+    --stat-gradient-2: from-sky-400/8 to-indigo-400/8;
+    --stat-gradient-3: from-teal-400/8 to-emerald-400/8;
+    --stat-gradient-4: from-amber-400/8 to-rose-400/8;
+    --stat-gradient-5: from-violet-400/8 to-indigo-400/8;
+    --stat-icon-1: from-indigo-400 to-blue-500;
+    --stat-icon-2: from-sky-400 to-indigo-400;
+    --stat-icon-3: from-teal-400 to-emerald-400;
+    --stat-icon-4: from-amber-400 to-rose-400;
+    --stat-icon-5: from-violet-400 to-indigo-400;
   }
 
   * {
@@ -143,21 +143,21 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .glass-card:hover {
-    border-color: rgba(var(--neon-rgb), 0.25);
+    border-color: rgba(var(--neon-rgb), 0.15);
   }
 
   .dark .glass-card:hover {
-    box-shadow: 0 0 20px rgba(var(--neon-rgb), 0.08);
+    box-shadow: 0 0 15px rgba(var(--neon-rgb), 0.04);
   }
 
   .neon-glow {
-    box-shadow: 0 0 10px rgba(var(--neon-rgb), 0.25),
-                0 0 20px rgba(var(--neon-rgb), 0.1);
+    box-shadow: 0 0 8px rgba(var(--neon-rgb), 0.15),
+                0 0 16px rgba(var(--neon-rgb), 0.06);
   }
 
   .neon-text {
-    text-shadow: 0 0 10px rgba(var(--neon-rgb), 0.4),
-                 0 0 20px rgba(var(--neon-rgb), 0.2);
+    text-shadow: 0 0 8px rgba(var(--neon-rgb), 0.25),
+                 0 0 16px rgba(var(--neon-rgb), 0.1);
   }
 
   .gradient-text {

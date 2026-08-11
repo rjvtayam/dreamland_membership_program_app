@@ -7,7 +7,7 @@ import { StatCardSkeleton } from '@/components/shared/Skeleton'
 import { FadeUp, StaggerContainer, StaggerItem } from '@/components/shared/Motion'
 import { motion } from 'framer-motion'
 
-const PIE_COLORS = ['#a855f7', '#22d3ee', '#f59e0b', '#ec4899']
+const PIE_COLORS = ['#5b6abf', '#6b8cc9', '#8b7ec8', '#9b8dd4']
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {

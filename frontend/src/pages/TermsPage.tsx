@@ -18,7 +18,7 @@ export default function TermsPage() {
             </motion.button>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #a855f7, #22d3ee)' }}>
+                style={{ background: 'linear-gradient(135deg, #5b6abf, #7c8ecf)' }}>
                 <Gamepad2 className="h-4 w-4 text-white" />
               </div>
               <span className="text-sm font-bold text-gray-800" style={{ fontFamily: "'Orbitron', sans-serif" }}>

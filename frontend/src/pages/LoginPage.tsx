@@ -102,7 +102,7 @@ export default function LoginPage() {
             height: Math.random() * 4 + 2,
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
-            background: ['#a855f7', '#6366f1', '#22d3ee', '#ec4899', '#f59e0b'][i % 5],
+            background: ['#7c8ecf', '#5b6abf', '#6b8cc9', '#8b7ec8', '#9b8dd4'][i % 5],
           }}
           animate={{ y: [0, -30, 0], opacity: [0.15, 0.6, 0.15], scale: [1, 1.3, 1] }}
           transition={{ duration: 3 + Math.random() * 3, repeat: Infinity, delay: i * 0.2, ease: 'easeInOut' }}
@@ -110,12 +110,12 @@ export default function LoginPage() {
       ))}
 
       {/* Glow orbs */}
-      <div className="absolute top-20 left-[15%] w-72 h-72 rounded-full blur-[100px] opacity-30"
-        style={{ background: 'radial-gradient(circle, #a855f7, transparent)' }} />
-      <div className="absolute bottom-20 right-[15%] w-64 h-64 rounded-full blur-[80px] opacity-20"
-        style={{ background: 'radial-gradient(circle, #22d3ee, transparent)' }} />
-      <div className="absolute top-[60%] left-[50%] w-48 h-48 rounded-full blur-[60px] opacity-15"
-        style={{ background: 'radial-gradient(circle, #ec4899, transparent)' }} />
+      <div className="absolute top-20 left-[15%] w-72 h-72 rounded-full blur-[100px] opacity-20"
+        style={{ background: 'radial-gradient(circle, #7c8ecf, transparent)' }} />
+      <div className="absolute bottom-20 right-[15%] w-64 h-64 rounded-full blur-[80px] opacity-15"
+        style={{ background: 'radial-gradient(circle, #6b8cc9, transparent)' }} />
+      <div className="absolute top-[60%] left-[50%] w-48 h-48 rounded-full blur-[60px] opacity-10"
+        style={{ background: 'radial-gradient(circle, #9b8dd4, transparent)' }} />
 
       {/* Login Card */}
       <motion.div
@@ -127,15 +127,15 @@ export default function LoginPage() {
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] border border-white/60 p-8 relative overflow-hidden">
           {/* Top gradient line */}
           <div className="absolute top-0 left-0 right-0 h-[2px]"
-            style={{ background: 'linear-gradient(to right, #a855f7, #6366f1, #22d3ee)' }} />
+            style={{ background: 'linear-gradient(to right, #5b6abf, #7c8ecf, #6b8cc9)' }} />
 
           {/* Logo */}
           <div className="flex justify-center mb-5">
             <motion.div whileHover={{ rotate: 8, scale: 1.06 }} className="relative">
-              <div className="absolute inset-0 rounded-2xl blur-xl opacity-40"
-                style={{ background: 'linear-gradient(135deg, #a855f7, #22d3ee)' }} />
+              <div className="absolute inset-0 rounded-2xl blur-xl opacity-30"
+                style={{ background: 'linear-gradient(135deg, #5b6abf, #7c8ecf)' }} />
               <div className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
-                style={{ background: 'linear-gradient(135deg, #a855f7, #22d3ee)' }}>
+                style={{ background: 'linear-gradient(135deg, #5b6abf, #7c8ecf)' }}>
                 <Gamepad2 className="h-8 w-8 text-white" strokeWidth={1.8} />
               </div>
             </motion.div>
@@ -146,7 +146,7 @@ export default function LoginPage() {
             <h1 className="text-[22px] font-bold uppercase tracking-[0.06em] whitespace-nowrap"
               style={{
                 fontFamily: "'Orbitron', sans-serif",
-                background: 'linear-gradient(135deg, #6366f1, #a855f7, #22d3ee)',
+                background: 'linear-gradient(135deg, #5b6abf, #7c8ecf, #6b8cc9)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
@@ -216,7 +216,7 @@ export default function LoginPage() {
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
               <Button type="submit"
                 className="w-full h-11 text-white border-0 font-semibold rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-shadow"
-                style={{ background: 'linear-gradient(135deg, #a855f7, #6366f1, #22d3ee)', fontFamily: "'Rajdhani', sans-serif", fontSize: '15px' }}
+                style={{ background: 'linear-gradient(135deg, #5b6abf, #7c8ecf, #6b8cc9)', fontFamily: "'Rajdhani', sans-serif", fontSize: '15px' }}
                 disabled={loading}>
                 {loading ? (
                   <div className="flex items-center gap-2">
