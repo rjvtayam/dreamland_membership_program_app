@@ -1,18 +1,11 @@
 import { useAuthStore } from '@/stores/authStore'
-import { useNavigate } from 'react-router-dom'
 import { useTheme } from '@/contexts/ThemeContext'
-import { LogOut, User, Sun, Moon, Zap } from 'lucide-react'
+import { User, Sun, Moon, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function TopBar() {
-  const { user, logout } = useAuthStore()
-  const navigate = useNavigate()
+  const { user } = useAuthStore()
   const { theme, toggleTheme } = useTheme()
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
 
   return (
     <header
@@ -80,19 +73,6 @@ export default function TopBar() {
             {user?.role}
           </span>
         </motion.div>
-
-        {/* Logout */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleLogout}
-          className="flex items-center gap-2 text-sm p-2 rounded-xl transition-colors"
-          style={{ color: 'var(--text-muted)' }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = 'rgba(239,68,68,0.08)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent' }}
-        >
-          <LogOut className="h-4 w-4" />
-        </motion.button>
       </div>
     </header>
   )

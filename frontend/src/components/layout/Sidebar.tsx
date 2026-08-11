@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   Users,
@@ -10,8 +10,10 @@ import {
   History,
   ChevronLeft,
   Gamepad2,
+  LogOut,
 } from 'lucide-react'
 import { useUIStore } from '@/stores/uiStore'
+import { useAuthStore } from '@/stores/authStore'
 import { cn } from '@/utils/formatters'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -28,6 +30,13 @@ const navItems = [
 
 export default function Sidebar() {
   const { sidebarOpen, toggleSidebar } = useUIStore()
+  const logout = useAuthStore((state) => state.logout)
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   return (
     <motion.aside
@@ -79,7 +88,7 @@ export default function Sidebar() {
         <div className="flex-1" />
         <button
           onClick={toggleSidebar}
-          className="flex-shrink-0 p-1 rounded-lg transition-colors text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]"
+          className="flex-shrink-0 p-1.5 rounded-lg transition-all duration-200 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-hover)]"
         >
           <ChevronLeft
             className={cn(
@@ -150,6 +159,39 @@ export default function Sidebar() {
           </div>
         ))}
       </nav>
+
+      {/* Divider */}
+      <div className="mx-3 h-px" style={{ background: 'var(--surface-border)' }} />
+
+      {/* Logout */}
+      <div className="px-2 py-3 flex-shrink-0">
+        <button
+          onClick={handleLogout}
+          className={cn(
+            "w-full flex items-center gap-3 rounded-xl transition-all duration-200",
+            sidebarOpen ? "px-3 py-2.5 justify-start" : "px-0 py-2.5 justify-center",
+            "text-[var(--text-muted)] hover:text-red-400 hover:bg-[rgba(239,68,68,0.08)]"
+          )}
+        >
+          <LogOut className="h-[18px] w-[18px] flex-shrink-0" />
+          <AnimatePresence>
+            {sidebarOpen && (
+              <motion.span
+                initial={{ opacity: 0, width: 0 }}
+                animate={{ opacity: 1, width: 'auto' }}
+                exit={{ opacity: 0, width: 0 }}
+                transition={{ duration: 0.2 }}
+                className="text-[13px] font-medium whitespace-nowrap overflow-hidden"
+              >
+                Logout
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </button>
+        {!sidebarOpen && (
+          <div className="sidebar-tooltip">Logout</div>
+        )}
+      </div>
     </motion.aside>
   )
 }
